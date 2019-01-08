@@ -1,7 +1,7 @@
 {
-	"name": "mooncascade-challenge",
+	"name": "challenge",
 	"version": "1.0.0",
-	"description": "mooncascade sports event API, written for mooncascade challenge",
+	"description": "sports event API, written for challenge",
 	"main": "src/server.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",

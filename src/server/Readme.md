@@ -1,6 +1,6 @@
-# Mooncascade sport event timing API
+# sport event timing API
 
-This program is built for mooncascade application challenge.
+This program is built for application challenge.
 
 ## Building and running locally
 
@@ -9,8 +9,8 @@ To run this locally, you need Node.js > 8 and a MongoDB.
 Clone the repository, install required packages via `npm install`  then run `npm start`. Example commands are below:
 
 ```sh
-git clone https://github.com/giresse19/mooncascade_challenge
-cd mooncascade-challenge-server
+git clone https://github.com/giresse19/Sport-Event-App/tree/master/src
+cd client/server
 npm install
 npm start
 ```

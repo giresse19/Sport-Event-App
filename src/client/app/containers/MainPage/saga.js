@@ -12,7 +12,7 @@ import {
 } from './constants';
 
 function connect() {
-  console.log("inside connect in saga")
+  console.log("I am in websocket connect in saga file")
   const socket = io('http://localhost:8000', {
     query: {
       clientType: 'uiClientTest'
@@ -32,14 +32,14 @@ function subscribe(socket) {
 
       console.log('runner in corrodor', runners);      
 
-      emit(addRunner({ startRunner: runners }));
+      emit(addRunner( {startRunner: runners} ));
     });
 
     socket.on('getfinish', ({ runnersFinal }) => {
 
       console.log('runner in finish', runnersFinal);
       
-      emit(conRunner({ finishRunner: runnersFinal }));
+      emit(conRunner( {finishRunner:runnersFinal} ));
     });
 
     socket.on('disconnect', () => {
