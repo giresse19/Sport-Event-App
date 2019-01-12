@@ -4,10 +4,10 @@
  *
  */
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { List } from "react-virtualized";
-import { Switch, Route, Redirect } from 'react-router-dom';
+import ReactTable from "react-table";
+import 'react-table/react-table.css';
 
 import Header from 'components/Header';
 import Loading from 'components/01-ui/Loading';
@@ -23,8 +23,7 @@ class Runners extends React.Component {
   componentDidMount() {
     let runners = this.props;
     let crossLineRunner = this.props;
-    console.log("runner mounted", runners.startRunner);
-    console.log("runner mounted", crossLineRunner);
+
   }
 
   render() {
@@ -34,77 +33,66 @@ class Runners extends React.Component {
       finishRunner,
     } = this.props
 
-    let runners = startRunner;
-      let crossLineRunner = finishRunner;
-      if (typeof runners.startRunner !== 'undefined') {
+    const runners = startRunner;
+    const crossLineRunner = finishRunner;
 
-        console.log("start runner from server to Browser", runners.startRunner[0]);
+    if (typeof runners.startRunner !== 'undefined') {
 
-        return (
-          <MainWrap>
-            <CenteringContainer>
-              <Wrapper>
-                <Header />
-                <BodyWrap>
-                  test
-                  {/* runners.startRunner.map((el) =><div> {el} </div>) */}
-                </BodyWrap>
-              </Wrapper>
-              <Button
-                text="Back"
-                onClick={() => {
-                  this.props.history.push('/welcome');
-                }}
-              />
-            </CenteringContainer>
-          </MainWrap>
-        );
-      }
+      console.log("start runner from server to Browser", runners.startRunner);
 
-      if (typeof crossLineRunner.finishRunner !== 'undefined') {
+      const DisplayedPlayer = ({ startRunner }) => (
+        <Fragment>
+          {startRunner.map(player => (
+            <BodyWrap key={player.AthleteID}>
+              <div className="player" >
+                {player.FullName},
+              {player.StartNumber}</div>
+            </BodyWrap>
+          ))}
+        </Fragment>
+      );
 
-        console.log("finished runner from server to Browser", finishRunner);
+      return (
+        <MainWrap>
+          <CenteringContainer>
+            <Wrapper>
+              <Header />
+              <DisplayedPlayer startRunner={runners.startRunner} />             
+            </Wrapper>
+          <Button
+            text="Back"
+            onClick={() => {
+              this.props.history.push('/welcome');
+            }}
+          />
+          </CenteringContainer>
+        </MainWrap >
+      );
+    }
 
-        return (
-          <MainWrap>
-            <CenteringContainer>
-              <Wrapper>
-                <Header />
-                <BodyWrap>
-                  Hello final world!
-                </BodyWrap>
-              </Wrapper>
-              <Button
-                text="Back"
-                onClick={() => {
-                  this.props.history.push('/welcome');
-                }}
-              />
-            </CenteringContainer>
-          </MainWrap>
-        );
-      }
+    if (typeof crossLineRunner.finishRunner !== 'undefined') {
 
-      if (typeof crossLineRunner.finishRunner || crossLineRunner.finishRunner === 'undefined') {
-        return (          
-          <MainWrap>
+      console.log("finished runner from server to Browser", finishRunner);
+
+      return (
+        <MainWrap>
           <CenteringContainer>
             <Wrapper>
               <Header />
               <BodyWrap>
                 Hello final world!
-              </BodyWrap>
+                </BodyWrap>
             </Wrapper>
-            <Button
-              text="Back"
-              onClick={() => {
-                this.props.history.push('/welcome');
-              }}
-            />
           </CenteringContainer>
+          <Button
+            text="Back"
+            onClick={() => {
+              this.props.history.push('/welcome');
+            }}
+          />
         </MainWrap>
-        )
-      }    
+      );
+    }
 
     return (
       <Loading />

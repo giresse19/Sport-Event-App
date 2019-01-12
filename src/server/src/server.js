@@ -60,10 +60,9 @@ io.on('connection', (socket, callback) => {
 					})
 				})
 				console.log('athletes from DB', runners);
-				socket.emit('incorridor',
-					{
+				socket.emit('incorridor', 					
 						runners
-					});
+					);
 			})
 		});
 

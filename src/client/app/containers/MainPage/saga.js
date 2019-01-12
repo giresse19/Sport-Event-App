@@ -28,7 +28,7 @@ function connect() {
 function subscribe(socket) {
   return eventChannel(emit => {
     
-    socket.on('incorridor', ({ runners }) => {
+    socket.on('incorridor', ( runners) => {
 
       console.log('runner in corrodor', runners);      
 

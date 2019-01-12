@@ -140,7 +140,6 @@
 		]
 	},
 	"dependencies": {
-		"axios": "^0.18.0",
 		"babel-polyfill": "6.26.0",
 		"chalk": "^2.4.1",
 		"compression": "1.7.2",
@@ -162,6 +161,7 @@
 		"react-redux": "5.0.7",
 		"react-router-dom": "4.3.1",
 		"react-router-redux": "5.0.0-alpha.9",
+		"react-table": "^6.8.6",
 		"react-virtualized": "^9.21.0",
 		"redux": "4.0.0",
 		"redux-immutable": "4.0.0",
