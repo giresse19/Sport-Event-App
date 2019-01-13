@@ -6,8 +6,8 @@
 
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import ReactTable from "react-table";
-import 'react-table/react-table.css';
+import { List } from 'react-virtualized'
+import 'react-virtualized/styles.css'
 
 import Header from 'components/Header';
 import Loading from 'components/01-ui/Loading';
@@ -21,9 +21,33 @@ import MainWrap from './styled/MainWrap';
 class Runners extends React.Component {
 
   componentDidMount() {
-    let runners = this.props;
-    let crossLineRunner = this.props;
+    this._interval = setInterval(this._updateFeed, 5000)
 
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._interval)
+  }
+
+  _updateFeed() {
+    const list = [...this.props.startRunner]
+
+    list.unshift(
+      // Add new item here
+    )
+
+    // If you want to scroll to the top you can do it like this
+    this.refs.List.scrollToRow(0)
+  }
+
+  _rowRenderer({ key, index }) {
+    return (
+      <div
+        key={key}
+      >
+        {/* Your content goes here */}
+      </div>
+    )
   }
 
   render() {
@@ -39,7 +63,6 @@ class Runners extends React.Component {
     if (typeof runners.startRunner !== 'undefined') {
 
       console.log("start runner from server to Browser", runners.startRunner);
-
       const DisplayedPlayer = ({ startRunner }) => (
         <Fragment>
           {startRunner.map(player => (
@@ -57,23 +80,33 @@ class Runners extends React.Component {
           <CenteringContainer>
             <Wrapper>
               <Header />
-              <DisplayedPlayer startRunner={runners.startRunner} />             
+              {/* <DisplayedPlayer startRunner={runners.startRunner} /> */}
+              <BodyWrap>
+                <List
+                  ref='List'
+                  width={3000}
+                  height={2000}
+                  rowHeight={60}
+                  rowCount={runners.startRunner.length}
+                  rowRenderer={this._rowRenderer}
+                />               
+                </BodyWrap>
             </Wrapper>
-          <Button
-            text="Back"
-            onClick={() => {
-              this.props.history.push('/welcome');
-            }}
-          />
+            <Button
+              text="Back"
+              onClick={() => {
+                this.props.history.push('/welcome');
+              }}
+            />
           </CenteringContainer>
         </MainWrap >
       );
     }
 
+
     if (typeof crossLineRunner.finishRunner !== 'undefined') {
 
       console.log("finished runner from server to Browser", finishRunner);
-
       return (
         <MainWrap>
           <CenteringContainer>
@@ -98,7 +131,9 @@ class Runners extends React.Component {
       <Loading />
     );
   }
+
 }
+
 
 Runners.propTypes = {
   Runners: PropTypes.shape({
