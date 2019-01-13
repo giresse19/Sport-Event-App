@@ -27,6 +27,9 @@ import 'normalize.css';
 
 import 'styles/style.scss';
 
+//css  needed for table rendering
+import 'react-virtualized/styles.css'
+
 import configureStore from './configureStore';
 
 // Create redux store with history

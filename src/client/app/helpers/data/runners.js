@@ -44,4 +44,49 @@ export default [
     timingPointID: 'Crossing Lines',
     clockTime: '',
   },
+  {
+    AthleteID: '10',
+    timingPointID: 'Start corridor',
+    clockTime: '',
+  },
+  {
+    AthleteID: '12',
+    timingPointID: 'Crossing Line',
+    clockTime: '',
+  },
+  {
+    AthleteID: '16',
+    timingPointID: 'Start corridor',
+    clockTime: '',
+  },
+  {
+    AthleteID: '13',
+    timingPointID: 'Start corridor',
+    clockTime: '',
+  },
+  {
+    AthleteID: '18',
+    timingPointID: 'Crossing Line',
+    clockTime: '',
+  },
+  {
+    AthleteID: '19',
+    timingPointID: 'Crossing Line',
+    clockTime: '',
+  },
+  {
+    AthleteID: '15',
+    timingPointID: 'Start corridor',
+    clockTime: '',
+  },
+  {
+    AthleteID: '14',
+    timingPointID: 'Start corridor',
+    clockTime: '',
+  },
+  {
+    AthleteID: '17',
+    timingPointID: 'Crossing Lines',
+    clockTime: '',
+  },
 ];

@@ -6,8 +6,7 @@
 
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { List } from 'react-virtualized'
-import 'react-virtualized/styles.css'
+import { Column, Table } from "react-virtualized";
 
 import Header from 'components/Header';
 import Loading from 'components/01-ui/Loading';
@@ -18,37 +17,36 @@ import Wrapper from './styled/Wrapper';
 import BodyWrap from './styled/BodyWrap';
 import MainWrap from './styled/MainWrap';
 
+
+const TOTAL_WIDTH = 1200;
+
 class Runners extends React.Component {
 
-  componentDidMount() {
-    this._interval = setInterval(this._updateFeed, 5000)
+  state = {
+    widths: {
+      AthleteID: 0.33,
+      FullName: 0.33,
+      StartNumber: 0.33
+    }
+  };
 
+  tableDisplay = {
+    display: 'inline-block',
+    border: '1px solid rgba(0, 0, 0, 0.1)',    
   }
 
-  componentWillUnmount() {
-    clearInterval(this._interval)
-  }
-
-  _updateFeed() {
-    const list = [...this.props.startRunner]
-
-    list.unshift(
-      // Add new item here
-    )
-
-    // If you want to scroll to the top you can do it like this
-    this.refs.List.scrollToRow(0)
-  }
-
-  _rowRenderer({ key, index }) {
+  headerRenderer = ({
+    dataKey,
+    label,
+  }) => {
     return (
-      <div
-        key={key}
-      >
-        {/* Your content goes here */}
-      </div>
-    )
-  }
+      <Fragment key={dataKey}>
+        <div style={this.tableDisplay}>          
+            {label}          
+        </div>    
+      </Fragment>
+    );
+  };
 
   render() {
 
@@ -57,40 +55,49 @@ class Runners extends React.Component {
       finishRunner,
     } = this.props
 
+    const {
+      widths
+    } = this.state;
+
     const runners = startRunner;
     const crossLineRunner = finishRunner;
 
     if (typeof runners.startRunner !== 'undefined') {
-
       console.log("start runner from server to Browser", runners.startRunner);
-      const DisplayedPlayer = ({ startRunner }) => (
-        <Fragment>
-          {startRunner.map(player => (
-            <BodyWrap key={player.AthleteID}>
-              <div className="player" >
-                {player.FullName},
-              {player.StartNumber}</div>
-            </BodyWrap>
-          ))}
-        </Fragment>
-      );
 
       return (
         <MainWrap>
           <CenteringContainer>
             <Wrapper>
               <Header />
-              {/* <DisplayedPlayer startRunner={runners.startRunner} /> */}
-              <BodyWrap>
-                <List
-                  ref='List'
-                  width={3000}
-                  height={2000}
-                  rowHeight={60}
-                  rowCount={runners.startRunner.length}
-                  rowRenderer={this._rowRenderer}
-                />               
-                </BodyWrap>
+              {/* <DisplayedPlayer startRunner={runners.startRunner} />  */}
+              <Table
+                width={TOTAL_WIDTH}
+                height={300}
+                headerHeight={20}
+                rowHeight={30}
+                rowCount={runners.startRunner.length}
+                rowGetter={({ index }) => runners.startRunner[index]}
+              >
+                <Column
+                  headerRenderer={this.headerRenderer}
+                  dataKey="FullName"
+                  label="Full Name"
+                  width={widths.FullName * TOTAL_WIDTH}
+                />
+                <Column
+                  headerRenderer={this.headerRenderer}
+                  dataKey="AthleteID"
+                  label="Athlete ID"
+                  width={widths.AthleteID * TOTAL_WIDTH}
+                />
+                <Column
+                  headerRenderer={this.headerRenderer}
+                  dataKey="StartNumber"
+                  label="starting No"
+                  width={widths.StartNumber * TOTAL_WIDTH}
+                />
+              </Table>
             </Wrapper>
             <Button
               text="Back"
@@ -105,7 +112,6 @@ class Runners extends React.Component {
 
 
     if (typeof crossLineRunner.finishRunner !== 'undefined') {
-
       console.log("finished runner from server to Browser", finishRunner);
       return (
         <MainWrap>
@@ -146,3 +152,17 @@ Runners.propTypes = {
 };
 
 export default Runners;
+
+
+      /* 
+      const DisplayedPlayer = ({ startRunner }) => (
+        <Fragment>
+          {startRunner.map(player => (
+            <BodyWrap key={player.AthleteID}>
+              <div className="player" >
+                {player.FullName},
+              {player.StartNumber}</div>
+            </BodyWrap>
+          ))}
+        </Fragment>
+      ); */
