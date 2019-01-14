@@ -51,7 +51,7 @@ io.on('connection', (socket, callback) => {
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
 						if(athlete.AthleteID === runnerElement.AthleteID){
-                           athlet.startTime = getRandomStartTime();
+                           athlet.startTime = getRandomTime();
                            runners.push(athlete)
 						}
 					})
