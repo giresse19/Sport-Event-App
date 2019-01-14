@@ -27,7 +27,7 @@ import 'normalize.css';
 
 import 'styles/style.scss';
 
-//css  needed for table rendering
+//css  needed for react-virtualized
 import 'react-virtualized/styles.css'
 
 import configureStore from './configureStore';
