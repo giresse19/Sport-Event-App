@@ -24,7 +24,7 @@ const checkChipId = (athletes, chipId) => {
 	}
 };
 
-const  generateRandomTime = (min_value , max_value) => {    
+const  generateRandomTime = (min , max) => {    
 	let random_time = Math.random() * (max-min) + min;
 	 return Math.floor(random_time);
  }
@@ -56,14 +56,12 @@ io.on('connection', (socket, callback) => {
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
 						if(athlete.AthleteID === runnerElement.AthleteID){
-                           runners.push(athlete)
+
+							athlete.startTime = generateRandomTime(0, 5);
+							runners.push(athlete);                           
 						}
 					})
-				})
-
-				runners.forEach(() => {
-					
-				})
+				})	
 
 				console.log('athletes from DB', runners);
 				socket.emit('incorridor', 					
@@ -85,13 +83,14 @@ io.on('connection', (socket, callback) => {
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
 						if(athlete.AthleteID == runnerElement.AthleteID){
-							runnersFinal.push(athlete)
+
+							athlete.stopTime = athlete.startTime + generateRandomTime(6, 15);
+							runnersFinal.push(athlete);							
 						}
 					})
 				})
 
 				console.log('finishing line...', runnersFinal);
-
 				socket.emit('getfinish',					
 						runnersFinal
 					);
