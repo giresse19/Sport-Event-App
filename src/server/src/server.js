@@ -24,6 +24,11 @@ const checkChipId = (athletes, chipId) => {
 	}
 };
 
+const  generateRandomTime = (min_value , max_value) => {    
+	let random_time = Math.random() * (max-min) + min;
+	 return Math.floor(random_time);
+ }
+
 // converts array of object to object.. use for client-testing case
 const mapArray = (arr) => arr.map((el) => el);
 
@@ -55,6 +60,7 @@ io.on('connection', (socket, callback) => {
 						}
 					})
 				})
+				
 				console.log('athletes from DB', runners);
 				socket.emit('incorridor', 					
 						runners
