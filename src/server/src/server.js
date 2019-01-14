@@ -24,10 +24,10 @@ const checkChipId = (athletes, chipId) => {
 	}
 };
 
-const  generateRandomTime = (min , max) => {    
+const generateRandomTime = (min, max) => {
 	let random_time = Math.random() * (max-min) + min;
-	 return Math.floor(random_time);
- }
+	return Math.floor(random_time);
+}
 
 // converts array of object to object.. use for client-testing case
 const mapArray = (arr) => arr.map((el) => el);
@@ -44,31 +44,40 @@ io.on('connection', (socket, callback) => {
 	if (clientType === 'uiClientTest') {
 
 		socket.on('start', ({ runner }) => {
-
-			console.log('athletes from browser', runner);
+			// console.log('athletes from browser', runner);
 
 			db.getAthletes((err, athletes) => {
 				if (err) return void callback(err);
 
 				athletes = mapArray(athletes);
 				const runners = [];
-				
+
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
-						if(athlete.AthleteID === runnerElement.AthleteID){
+						if (athlete.AthleteID === runnerElement.AthleteID) {
 
-							athlete.startTime = generateRandomTime(0, 5);
-							runners.push(athlete);                           
+							console.log("checking typeof here", typeof athlete);
+
+							console.log("random time", generateRandomTime(2, 3))
+
+							athlete.StartTime = generateRandomTime(2, 3);
+
+							console.log("checking value here", athlete.StartTime );
+
+							runners.push(athlete);
 						}
 					})
-				})	
+					// athletes.startTime = generateRandomTime(0, 5);
+				})
 
 				console.log('athletes from DB', runners);
-				socket.emit('incorridor', 					
-						runners
-					);
+				socket.emit('incorridor',
+					runners
+				);
 			})
 		});
+
+
 
 		socket.on('finish', ({ runner }) => {
 
@@ -79,21 +88,26 @@ io.on('connection', (socket, callback) => {
 
 				athletes = mapArray(athletes);
 				const runnersFinal = [];
-
+				console.log("console here", typeof athlete);
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
-						if(athlete.AthleteID == runnerElement.AthleteID){
+						if (athlete.AthleteID == runnerElement.AthleteID) {
 
-							athlete.stopTime = athlete.startTime + generateRandomTime(6, 15);
-							runnersFinal.push(athlete);							
+							console.log("console here", typeof athlete);
+
+							athlete.StopTime = athlete.StartTime + generateRandomTime(2, 3);
+
+							console.log("checking value here", athlete.StopTime );
+
+							runnersFinal.push(athlete);
 						}
 					})
 				})
 
 				console.log('finishing line...', runnersFinal);
-				socket.emit('getfinish',					
-						runnersFinal
-					);
+				socket.emit('getfinish',
+					runnersFinal
+				);
 			})
 		});
 
