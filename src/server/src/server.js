@@ -60,7 +60,11 @@ io.on('connection', (socket, callback) => {
 						}
 					})
 				})
-				
+
+				runners.forEach(() => {
+					
+				})
+
 				console.log('athletes from DB', runners);
 				socket.emit('incorridor', 					
 						runners
