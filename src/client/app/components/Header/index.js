@@ -20,7 +20,7 @@ function Header() {
       <CenteringContainer>
         <LeftColumn>
           <Link to="/welcome">
-            <LogoH1>task</LogoH1>
+            <LogoH1>Homepage</LogoH1>
           </Link>
         </LeftColumn>
       </CenteringContainer>

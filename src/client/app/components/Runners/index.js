@@ -16,6 +16,7 @@ import Button from 'components/01-ui/Button';
 import Wrapper from './styled/Wrapper';
 import BodyWrap from './styled/BodyWrap';
 import MainWrap from './styled/MainWrap';
+import TableHeader from './styled/TableHeader';
 
 
 const TOTAL_WIDTH = 1200;
@@ -30,20 +31,15 @@ class Runners extends React.Component {
     }
   };
 
-  tableDisplay = {
-    display: 'inline-block',
-    border: '1px solid rgba(0, 0, 0, 0.1)',    
-  }
-
   headerRenderer = ({
     dataKey,
     label,
   }) => {
     return (
       <Fragment key={dataKey}>
-        <div style={this.tableDisplay}>          
-            {label}          
-        </div>    
+        <TableHeader>
+          {label}
+        </TableHeader>
       </Fragment>
     );
   };
@@ -51,13 +47,13 @@ class Runners extends React.Component {
   render() {
 
     const {
+      widths
+    } = this.state;
+
+    const {
       startRunner,
       finishRunner,
     } = this.props
-
-    const {
-      widths
-    } = this.state;
 
     const runners = startRunner;
     const crossLineRunner = finishRunner;
@@ -70,10 +66,10 @@ class Runners extends React.Component {
           <CenteringContainer>
             <Wrapper>
               <Header />
-              {/* <DisplayedPlayer startRunner={runners.startRunner} />  */}
               <Table
+                ref='Table'
                 width={TOTAL_WIDTH}
-                height={300}
+                height={400}
                 headerHeight={20}
                 rowHeight={30}
                 rowCount={runners.startRunner.length}
@@ -94,7 +90,7 @@ class Runners extends React.Component {
                 <Column
                   headerRenderer={this.headerRenderer}
                   dataKey="StartNumber"
-                  label="starting No"
+                  label="starting Position"
                   width={widths.StartNumber * TOTAL_WIDTH}
                 />
               </Table>
@@ -110,25 +106,50 @@ class Runners extends React.Component {
       );
     }
 
-
     if (typeof crossLineRunner.finishRunner !== 'undefined') {
-      console.log("finished runner from server to Browser", finishRunner);
+      console.log("finished runner from server to Browser", crossLineRunner.finishRunner );
+
       return (
         <MainWrap>
           <CenteringContainer>
             <Wrapper>
               <Header />
-              <BodyWrap>
-                Hello final world!
-                </BodyWrap>
+              <Table
+                ref='Table'
+                width={TOTAL_WIDTH}
+                height={400}
+                headerHeight={20}
+                rowHeight={30}
+                rowCount={crossLineRunner.finishRunner.length}
+                rowGetter={({ index }) => crossLineRunner.finishRunner[index]}
+              >               
+                  <Column
+                    headerRenderer={this.headerRenderer}
+                    dataKey="FullName"
+                    label="Full Name"
+                    width={widths.FullName * TOTAL_WIDTH}
+                  />
+                  <Column
+                    headerRenderer={this.headerRenderer}
+                    dataKey="AthleteID"
+                    label="Athlete ID"
+                    width={widths.AthleteID * TOTAL_WIDTH}
+                  />
+                  <Column
+                    headerRenderer={this.headerRenderer}
+                    dataKey="StartNumber"
+                    label="starting Position"
+                    width={widths.StartNumber * TOTAL_WIDTH}
+                  />               
+              </Table>
             </Wrapper>
+            <Button
+              text="Back"
+              onClick={() => {
+                this.props.history.push('/welcome');
+              }}
+            />
           </CenteringContainer>
-          <Button
-            text="Back"
-            onClick={() => {
-              this.props.history.push('/welcome');
-            }}
-          />
         </MainWrap>
       );
     }
@@ -137,32 +158,18 @@ class Runners extends React.Component {
       <Loading />
     );
   }
-
 }
-
 
 Runners.propTypes = {
   Runners: PropTypes.shape({
     startRunner: PropTypes.object,
     finishRunner: PropTypes.object,
   }),
+
+  headerRenderer: PropTypes.func,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),
 };
 
 export default Runners;
-
-
-      /* 
-      const DisplayedPlayer = ({ startRunner }) => (
-        <Fragment>
-          {startRunner.map(player => (
-            <BodyWrap key={player.AthleteID}>
-              <div className="player" >
-                {player.FullName},
-              {player.StartNumber}</div>
-            </BodyWrap>
-          ))}
-        </Fragment>
-      ); */

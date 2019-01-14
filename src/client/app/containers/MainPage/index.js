@@ -33,7 +33,7 @@ export class MainPage extends React.Component {
       startRunner,
       finishRunner,
     } = this.props.mainPage;
-
+   
     return (
       <Switch>
         <Redirect exact from="/" to="/welcome" />
@@ -52,8 +52,8 @@ export class MainPage extends React.Component {
           path="/runners"
           render={props => (
             <Runners
-              startRunner={startRunner}
               finishRunner={finishRunner}
+              startRunner={startRunner}
               {...props}
             />
           )}

@@ -40,10 +40,6 @@ io.on('connection', (socket, callback) => {
 
 		socket.on('start', ({ runner }) => {
 
-			module.exports = () => {
-				if (!runner.chipId) return void callback({ status: 400, message: 'Athlete chipId not must be absent' });
-			}
-
 			console.log('athletes from browser', runner);
 
 			db.getAthletes((err, athletes) => {
@@ -54,7 +50,7 @@ io.on('connection', (socket, callback) => {
 				
 				runner.forEach((runnerElement) => {
 					athletes.forEach((athlete) => {
-						if(athlete.AthleteID == runnerElement.AthleteID){
+						if(athlete.AthleteID === runnerElement.AthleteID){
                            runners.push(athlete)
 						}
 					})
@@ -86,10 +82,9 @@ io.on('connection', (socket, callback) => {
 
 				console.log('finishing line...', runnersFinal);
 
-				socket.emit('getfinish',
-					{
+				socket.emit('getfinish',					
 						runnersFinal
-					});
+					);
 			})
 		});
 
