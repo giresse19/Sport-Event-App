@@ -33,7 +33,7 @@ export class MainPage extends React.Component {
       startRunner,
       finishRunner,
     } = this.props.mainPage;
-   
+
     return (
       <Switch>
         <Redirect exact from="/" to="/welcome" />
@@ -81,8 +81,17 @@ const mapStateToProps = createStructuredSelector({
 });
 
 function mapDispatchToProps(dispatch) {
+
   return {
-    login: (runnerStart) => dispatch(login(runnerStart)),
+    login: ([runnerStart]) => {
+      runnerStart.forEach((runner) => {
+        console.log("individual runner", runner)
+        dispatch(login(runner))
+      },
+      )
+
+    },
+
     loginFinal: (runnersFinal) => dispatch(loginFinal(runnersFinal)),
 
   };

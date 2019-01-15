@@ -24,9 +24,8 @@ const checkChipId = (athletes, chipId) => {
 	}
 };
 
-const generateRandomTime = (min, max) => {
-	let random_time = Math.random() * (max-min) + min;
-	return Math.floor(random_time);
+const getRandomArbitrary = (min, max) => {
+	return Math.random() * (max - min) + min;
 }
 
 // converts array of object to object.. use for client-testing case
@@ -40,41 +39,41 @@ io.on('connection', (socket, callback) => {
 	// Joining to room
 	socket.join(clientType);
 
+	const runners = []
 	// for testing client-side as required in task
 	if (clientType === 'uiClientTest') {
 
-		socket.on('start', ({ runner }) => {
-			// console.log('athletes from browser', runner);
+    
+		socket.on('start', ({ startRunner }) => {
+
+			console.log('athletes from browser', startRunner);
 
 			db.getAthletes((err, athletes) => {
 				if (err) return void callback(err);
 
 				athletes = mapArray(athletes);
-				const runners = [];
 
-				runner.forEach((runnerElement) => {
-					athletes.forEach((athlete) => {
-						if (athlete.AthleteID === runnerElement.AthleteID) {
+				athletes.forEach((athlete) => {
 
-							console.log("checking typeof here", typeof athlete);
+					if (athlete.AthleteID !== startRunner.AthleteID) {
+						console.log("athlete not found", startRunner)
+						return
+					}
 
-							console.log("random time", generateRandomTime(2, 3))
+					if (athlete.AthleteID == startRunner.AthleteID) {
 
-							athlete.StartTime = generateRandomTime(2, 3);
+						socket.emit('incorridor',
+							athlete
+						)
 
-							console.log("checking value here", athlete.StartTime );
+						runners.push(athlete)
+						console.log("athlete pushed to runners", runners )
+						return
+					}
 
-							runners.push(athlete);
-						}
-					})
-					// athletes.startTime = generateRandomTime(0, 5);
 				})
-
-				console.log('athletes from DB', runners);
-				socket.emit('incorridor',
-					runners
-				);
 			})
+
 		});
 
 
@@ -97,7 +96,7 @@ io.on('connection', (socket, callback) => {
 
 							athlete.StopTime = athlete.StartTime + generateRandomTime(2, 3);
 
-							console.log("checking value here", athlete.StopTime );
+							console.log("checking value here", athlete.StopTime);
 
 							runnersFinal.push(athlete);
 						}

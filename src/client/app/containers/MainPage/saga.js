@@ -28,11 +28,11 @@ function connect() {
 function subscribe(socket) {
   return eventChannel(emit => {
 
-    socket.on('incorridor', (runners) => {
+    socket.on('incorridor', (athlete) => {
 
-      console.log('runner in corridor', runners);
+      console.log('runner in corridor', athlete);
 
-      emit(addRunner({ startRunner: runners }));
+      emit(addRunner({ startRunner: athlete }));
     });
 
     socket.on('getfinish', (runnersFinal) => {
@@ -63,17 +63,27 @@ function* handleIO(socket) {
 
 export function* flow(action) {
 
-  console.log("this is runnerStart", action.runnerStart);
+  let runner = [];
+
+  let startRunner = action.runnerStart;
+
+  console.log("start runners", startRunner);
 
   const socket = yield call(connect);
 
-  // sending each runner entering corridor to server
-  action.runnerStart.forEach((runner) => {
+  runner.push(startRunner)
 
-    console.log("individual runner", runner)
-    
-    socket.emit('start', { runner });
+  runner.forEach((startRunner) => {
+
+    console.log("runner runner pushed to server", startRunner)
+
+    socket.emit('start', { startRunner });
   })
+
+  // sending each runner entering corridor to server
+  //  socket.emit('start', { startRunner });  
+
+
   yield fork(handleIO, socket);
 
 }
@@ -81,13 +91,17 @@ export function* flow(action) {
 export function* flowFinal(action) {
 
   // for finish line crossing
-  console.log("this is 2nd payload", action.runnersFinal);
+  let runner = action.runnersFinal
+  console.log("this is 2nd payload", runner);
+
   const socket = yield call(connect);
 
-  action.runnersFinal.forEach((runner) => {
-    socket.emit('finish', { runner });
-  })
+  socket.emit('finish', { runner });
 
+  /*   action.runnersFinal.forEach((runner) => {
+      socket.emit('finish', { runner });
+    })
+   */
   yield fork(handleIO, socket);
 }
 

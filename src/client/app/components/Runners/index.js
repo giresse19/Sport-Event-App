@@ -55,6 +55,9 @@ class Runners extends React.Component {
       finishRunner,
     } = this.props
 
+    const runner = startRunner;
+    console.log("runner in runner component", runner.startRunner)
+
     const runners = startRunner;
     const crossLineRunner = finishRunner;
 
@@ -66,34 +69,7 @@ class Runners extends React.Component {
           <CenteringContainer>
             <Wrapper>
               <Header />
-              <Table
-                ref='Table'
-                width={TOTAL_WIDTH}
-                height={400}
-                headerHeight={20}
-                rowHeight={30}
-                rowCount={runners.startRunner.length}
-                rowGetter={({ index }) => runners.startRunner[index]}
-              >
-                <Column
-                  headerRenderer={this.headerRenderer}
-                  dataKey="FullName"
-                  label="Full Name"
-                  width={widths.FullName * TOTAL_WIDTH}
-                />
-                <Column
-                  headerRenderer={this.headerRenderer}
-                  dataKey="AthleteID"
-                  label="Athlete ID"
-                  width={widths.AthleteID * TOTAL_WIDTH}
-                />
-                <Column
-                  headerRenderer={this.headerRenderer}
-                  dataKey="StartNumber"
-                  label="starting Position"
-                  width={widths.StartNumber * TOTAL_WIDTH}
-                />
-              </Table>
+
             </Wrapper>
             <Button
               text="Back"
