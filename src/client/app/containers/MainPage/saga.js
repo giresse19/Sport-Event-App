@@ -67,7 +67,11 @@ export function* flow(action) {
 
   const socket = yield call(connect);
 
+  // sending each runner entering corridor to server
   action.runnerStart.forEach((runner) => {
+
+    console.log("individual runner", runner)
+    
     socket.emit('start', { runner });
   })
   yield fork(handleIO, socket);
@@ -75,6 +79,7 @@ export function* flow(action) {
 }
 
 export function* flowFinal(action) {
+
   // for finish line crossing
   console.log("this is 2nd payload", action.runnersFinal);
   const socket = yield call(connect);
@@ -84,11 +89,6 @@ export function* flowFinal(action) {
   })
 
   yield fork(handleIO, socket);
-
-  /* let action = yield take(`${logout}`);
-   yield cancel(task);
-  socket.emit('logout'); */
-
 }
 
 export default function* watcher() {
