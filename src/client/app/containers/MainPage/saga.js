@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import { eventChannel } from 'redux-saga';
 
-import { takeLatest, fork, take, call, put, cancel } from 'redux-saga/effects';
+import { takeEvery, fork, take, call, put } from 'redux-saga/effects';
 
 import {
   addRunner, conRunner
@@ -63,51 +63,34 @@ function* handleIO(socket) {
 
 export function* flow(action) {
 
-  let runner = [];
-
   let startRunner = action.runnerStart;
 
   console.log("start runners", startRunner);
 
   const socket = yield call(connect);
-
-  runner.push(startRunner)
-
-  runner.forEach((startRunner) => {
-
-    console.log("runner runner pushed to server", startRunner)
-
-    socket.emit('start', { startRunner });
-  })
-
-  // sending each runner entering corridor to server
-  //  socket.emit('start', { startRunner });  
-
+  
+  socket.emit('start', { startRunner }); 
 
   yield fork(handleIO, socket);
-
 }
 
-export function* flowFinal(action) {
+// for finish line crossing
+export function* flowFinal(action) {  
 
-  // for finish line crossing
   let runner = action.runnersFinal
+
   console.log("this is 2nd payload", runner);
 
   const socket = yield call(connect);
 
   socket.emit('finish', { runner });
 
-  /*   action.runnersFinal.forEach((runner) => {
-      socket.emit('finish', { runner });
-    })
-   */
   yield fork(handleIO, socket);
 }
 
 export default function* watcher() {
   yield [
-    takeLatest(LOGIN, flow),
-    takeLatest(LOGINFINAL, flowFinal),
+    takeEvery(LOGIN, flow),
+    takeEvery(LOGINFINAL, flowFinal),
   ];
 }

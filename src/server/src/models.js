@@ -10,7 +10,8 @@ const LogSchema = Schema({
 const AthleteSchema = Schema({
   AthleteID: { type: String, required: true, unique: true }, 
   StartNumber: { type: Number, required: true },
-  FullName: { type: String, required: true }
+  FullName: { type: String, required: true },
+  StartTime: { type: String, required: false} 
 });
 
 module.exports.Log = mongoose.model('Log', LogSchema);

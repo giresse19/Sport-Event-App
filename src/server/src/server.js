@@ -16,141 +16,142 @@ const mapArrayByProp = (arr, prop) => Object.assign({}, ...arr.map((el) => ({ [e
 
 // check if runner is registered in DB.. 
 const checkChipId = (athletes, chipId) => {
-	for (const id in athletes) {
-		if ((athletes[id].AthleteID.indexOf(chipId) > -1)) {
-			console.log(athletes[id].FullName)
-			return athletes[id].FullName;
-		}
-	}
+  for (const id in athletes) {
+    if ((athletes[id].AthleteID.indexOf(chipId) > -1)) {
+      console.log(athletes[id].FullName)
+      return athletes[id].FullName;
+    }
+  }
 };
 
+// 2 decimals
+// var precision = 100; 
+// var randomnum = Math.floor(Math.random() * (10 * precision - 1 * precision) + 1 * precision) / (1*precision);
 const getRandomArbitrary = (min, max) => {
-	return Math.random() * (max - min) + min;
+  return (Math.random() * (max - min) + min);
 }
 
 // converts array of object to object.. use for client-testing case
 const mapArray = (arr) => arr.map((el) => el);
 
 io.on('connection', (socket, callback) => {
-	console.log('[new socket] connected');
+  console.log('[new socket] connected');
 
-	const clientType = socket.handshake.query.clientType;
+  const clientType = socket.handshake.query.clientType;
 
-	// Joining to room
-	socket.join(clientType);
+  // Joining to room
+  socket.join(clientType);
 
-	const runners = []
-	// for testing client-side as required in task
-	if (clientType === 'uiClientTest') {
+  const runners = []
+  // for testing client-side as required in task
+  if (clientType === 'uiClientTest') {
 
-    
-		socket.on('start', ({ startRunner }) => {
 
-			console.log('athletes from browser', startRunner);
+    socket.on('start', ({ startRunner }) => {
 
-			db.getAthletes((err, athletes) => {
-				if (err) return void callback(err);
+      console.log('athletes from browser', startRunner);
 
-				athletes = mapArray(athletes);
+      db.getAthletes((err, athletes) => {
+        if (err) return void callback(err);
 
-				athletes.forEach((athlete) => {
+        athletes = mapArray(athletes);
 
-					if (athlete.AthleteID !== startRunner.AthleteID) {
-						console.log("athlete not found", startRunner)
-						return
-					}
+        athletes.forEach((athlete) => {
 
-					if (athlete.AthleteID == startRunner.AthleteID) {
+          if (athlete.AthleteID !== startRunner.AthleteID) {
+            // console.log("athlete not found", startRunner)
+            return
+          }
 
-						socket.emit('incorridor',
-							athlete
-						)
+          if (athlete.AthleteID == startRunner.AthleteID) {
 
-						runners.push(athlete)
-						console.log("athlete pushed to runners", runners )
-						return
-					}
+            athlete.StartTime = getRandomArbitrary(1, 5);
+            socket.emit('incorridor',
+              athlete
+            )
+            return
+          }
 
-				})
-			})
+        })
+      })
 
-		});
+    });
 
 
 
-		socket.on('finish', ({ runner }) => {
+    socket.on('finish', ({ runner }) => {
 
-			console.log('finishline athletes from browser', runner);
+      console.log('finishline athletes from browser', runner);
 
-			db.getAthletes((err, athletes) => {
-				if (err) return void callback(err);
+      db.getAthletes((err, athletes) => {
+        if (err) return void callback(err);
 
-				athletes = mapArray(athletes);
-				const runnersFinal = [];
-				console.log("console here", typeof athlete);
-				runner.forEach((runnerElement) => {
-					athletes.forEach((athlete) => {
-						if (athlete.AthleteID == runnerElement.AthleteID) {
+        athletes = mapArray(athletes);
+        const runnersFinal = [];
+        console.log("console here", typeof athlete);
+        runner.forEach((runnerElement) => {
+          athletes.forEach((athlete) => {
+            if (athlete.AthleteID == runnerElement.AthleteID) {
 
-							console.log("console here", typeof athlete);
+              console.log("console here", typeof athlete);
 
-							athlete.StopTime = athlete.StartTime + generateRandomTime(2, 3);
+              athlete.StopTime = athlete.StartTime + generateRandomTime(2, 3);
 
-							console.log("checking value here", athlete.StopTime);
+              console.log("checking value here", athlete.StopTime);
 
-							runnersFinal.push(athlete);
-						}
-					})
-				})
+              runnersFinal.push(athlete);
+            }
+          })
+        })
 
-				console.log('finishing line...', runnersFinal);
-				socket.emit('getfinish',
-					runnersFinal
-				);
-			})
-		});
+        console.log('finishing line...', runnersFinal);
+        socket.emit('getfinish',
+          runnersFinal
+        );
+      })
+    });
 
-		socket.on('disconnect', () => {
-			console.log('Client disconnected');
-			// TODO.. non-mandatory task
-		});
-	}
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+      // TODO.. non-mandatory task
+    });
+  }
 
 
-	/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  */
-	// An example real time scenario code(real life runner)..just a suggestion code.
-	// P.S.. Pay attention to how emit is done	
-	if (clientType === 'runner') {
+  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  */
+  // An example real time scenario code(real life runner)..just a suggestion code.
+  // P.S.. Pay attention to how emit is done	
+  if (clientType === 'runner') {
 
-		let runners = [];
-		socket.on('getTime', (chipId, locationType, time) => {
-			module.exports = () => {
-				if (!chipId) return void callback({ status: 400, message: 'AthletechipId cannot be empty' });
+    let runners = [];
+    socket.on('getTime', (chipId, locationType, time) => {
+      module.exports = () => {
+        if (!chipId) return void callback({ status: 400, message: 'AthletechipId cannot be empty' });
 
-				// get the athlete from database using chipId, create a response object including athlete info
-				db.getAthletes((err, athletes) => {
-					if (err) return void callback(err);
+        // get the athlete from database using chipId, create a response object including athlete info
+        db.getAthletes((err, athletes) => {
+          if (err) return void callback(err);
 
-					athletes = mapArrayByProp(athletes, 'AthleteID');
+          athletes = mapArrayByProp(athletes, 'AthleteID');
 
-					checkChipId(athletes, chipId);
-					if (!Object.keys(athletes).length)
-						return void callback({ status: 400, message: 'No Athletes passed from ChipId check' });
-					athletes.locationType = locationType;
-					athletes.time = time;
-					db.runner(athletes);
-					runners.push(athletes);
-				});
-			};
+          checkChipId(athletes, chipId);
+          if (!Object.keys(athletes).length)
+            return void callback({ status: 400, message: 'No Athletes passed from ChipId check' });
+          athletes.locationType = locationType;
+          athletes.time = time;
+          db.runner(athletes);
+          runners.push(athletes);
+        });
+      };
 
-			// Send the response object to all ui clients
-			io.to('uiClients').emit('sendingData', runners);
-		});
+      // Send the response object to all ui clients
+      io.to('uiClients').emit('sendingData', runners);
+    });
 
-		socket.on('disconnect', () => {
-			console.log('Client disconnected');
-		});
-	}
+    socket.on('disconnect', () => {
+      console.log('Client disconnected');
+    });
+  }
 
 });
 

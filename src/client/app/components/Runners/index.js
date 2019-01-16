@@ -61,8 +61,9 @@ class Runners extends React.Component {
     const runners = startRunner;
     const crossLineRunner = finishRunner;
 
+    
     if (typeof runners.startRunner !== 'undefined') {
-      console.log("start runner from server to Browser", runners.startRunner);
+     //  console.log("start runner from server to Browser", runners.startRunner);
 
       return (
         <MainWrap>
