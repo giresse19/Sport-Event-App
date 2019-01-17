@@ -1,6 +1,8 @@
 const fs = require('fs');
 
-const prettierOptions = JSON.parse(fs.readFileSync('./.prettierrc', 'utf8'));
+const prettierOptions = JSON.parse(
+  fs.readFileSync('./.prettierrc', 'utf8'),
+);
 
 module.exports = {
   parser: 'babel-eslint',
@@ -20,10 +22,23 @@ module.exports = {
     },
   },
   rules: {
-    "jsx-a11y/anchor-is-valid": [ "error", {
-      "components": [ "Link" ],
-      "specialLink": [ "to" ]
-    }],
+    indent: 'off',
+    'arrow-body-style': 0,
+    ' no-unused-expressions': 0,
+    'no-sequences': 0,
+    'one-var': 0,
+    yoda: 0,
+    'no-unused-expressions': 0,
+    'no-param-reassign': 0,
+    'consistent-return': 0,
+
+    'jsx-a11y/anchor-is-valid': [
+      'error',
+      {
+        components: ['Link'],
+        specialLink: ['to'],
+      },
+    ],
     'prettier/prettier': ['error', prettierOptions],
     'arrow-body-style': [2, 'as-needed'],
     'class-methods-use-this': 0,
@@ -36,13 +51,6 @@ module.exports = {
     'import/no-unresolved': 2,
     'import/no-webpack-loader-syntax': 0,
     'import/prefer-default-export': 0,
-    indent: [
-      2,
-      2,
-      {
-        SwitchCase: 1,
-      },
-    ],
     'jsx-a11y/aria-props': 2,
     'jsx-a11y/heading-has-content': 0,
     'jsx-a11y/label-has-for': 2,
@@ -67,6 +75,7 @@ module.exports = {
     'redux-saga/no-yield-in-race': 2,
     'redux-saga/yield-effects': 2,
     'require-yield': 0,
+    ' react/no-did-update-set-state': 0,
   },
   settings: {
     'import/resolver': {

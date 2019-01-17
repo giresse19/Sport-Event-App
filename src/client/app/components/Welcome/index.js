@@ -49,7 +49,10 @@ function Welcome({ historyPush, login, loginFinal }) {
           <Button
             text="Start"
             onClick={() => {
-              login([runnerStart]), historyPush('/runners');
+              login([runnerStart]) /* eslint-disable indent */,
+                historyPush(
+                  '/runners',
+                ); /* eslint-disable no-unused-expressions */
             }}
           />
         </Fields>
@@ -57,7 +60,10 @@ function Welcome({ historyPush, login, loginFinal }) {
           <Button
             text="Finish"
             onClick={() => {
-              loginFinal([runnersFinal]), historyPush('/runners');
+              loginFinal([runnersFinal]),
+                historyPush(
+                  '/runners',
+                ); /* eslint-disable no-unused-expressions */
             }}
           />
         </Fields>

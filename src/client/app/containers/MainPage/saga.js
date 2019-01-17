@@ -45,7 +45,7 @@ function subscribe(socket) {
 function* read(socket) {
   const channel = yield call(subscribe, socket);
   while (true) {
-    let action = yield take(channel);
+    const action = yield take(channel);
     yield put(action);
   }
 }
@@ -56,7 +56,7 @@ function* handleIO(socket) {
 
 // entering corridor runner
 export function* flow(action) {
-  let startRunner = action.runnerStart;
+  const startRunner = action.runnerStart;
 
   console.log(
     'runner send signal for entering corridor line: ',
@@ -72,7 +72,7 @@ export function* flow(action) {
 
 // for finish line crossing runner
 export function* flowFinal(action) {
-  let finishRunner = action.runnersFinal;
+  const finishRunner = action.runnersFinal;
 
   console.log(
     'runner send signal for crossing finish line: ',

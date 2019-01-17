@@ -37,6 +37,7 @@ class Runners extends React.PureComponent {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
+    // eslint-disable consistent-return
     if (nextProps.startRunner !== prevState.list) {
       return {
         list: nextProps.startRunner,
@@ -45,21 +46,7 @@ class Runners extends React.PureComponent {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.list !== this.state.list ||
-      prevState.listFinal !== this.state.listFinal
-    ) {
-      this.setState({
-        list: [...prevProps.startRunner, this.state.list],
-        listFinal: [
-          ...prevProps.finishRunner,
-          this.state.finishRunner,
-        ],
-      });
-    }
-  }
-
+  /* eslint-disable arrow-body-style */
   headerRenderer = ({ dataKey, label }) => {
     return (
       <Fragment key={dataKey}>
@@ -71,8 +58,8 @@ class Runners extends React.PureComponent {
   render() {
     const { list, widths, listFinal } = this.state;
 
-    let rowCountStart = [];
-    let rowCountFinal = [];
+    const rowCountStart = [];
+    const rowCountFinal = [];
 
     rowCountStart.push(list.startRunner);
 
@@ -88,7 +75,6 @@ class Runners extends React.PureComponent {
               <Header />
 
               <Table
-                myRef={el => (this.Table = el)}
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -134,7 +120,6 @@ class Runners extends React.PureComponent {
               <Header />
 
               <Table
-                myRef={el => (this.TableFinal = el)}
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -178,11 +163,6 @@ class Runners extends React.PureComponent {
 }
 
 Runners.propTypes = {
-  Runners: PropTypes.shape({
-    startRunner: PropTypes.object,
-    finishRunner: PropTypes.object,
-  }),
-
   startRunner: PropTypes.object,
   finishRunner: PropTypes.object,
   history: PropTypes.shape({
