@@ -5,7 +5,6 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import CenteringContainer from 'components/01-ui/CenteringContainer';
@@ -27,7 +26,5 @@ function Header() {
     </Wrapper>
   );
 }
-
-Header.propTypes = {};
 
 export default Header;

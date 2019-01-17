@@ -27,8 +27,8 @@ import 'normalize.css';
 
 import 'styles/style.scss';
 
-//css  needed for react-virtualized.. imported ones
-import 'react-virtualized/styles.css'
+// css  needed for react-virtualized.. imported ones
+import 'react-virtualized/styles.css';
 
 import configureStore from './configureStore';
 

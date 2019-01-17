@@ -18,7 +18,10 @@ shell.mv(
   'app/containers/LanguageProvider/tests',
   'internals/templates/containers/LanguageProvider',
 );
-shell.cp('app/tests/i18n.test.js', 'internals/templates/tests/i18n.test.js');
+shell.cp(
+  'app/tests/i18n.test.js',
+  'internals/templates/tests/i18n.test.js',
+);
 
 // Cleanup components/
 shell.rm('-rf', 'app/components/*');
@@ -40,11 +43,17 @@ shell.mv('internals/templates/utils', 'app');
 
 // Replace the files in the root app/ folder
 shell.cp('internals/templates/app.js', 'app/app.js');
-shell.cp('internals/templates/global-styles.js', 'app/global-styles.js');
+shell.cp(
+  'internals/templates/global-styles.js',
+  'app/global-styles.js',
+);
 shell.cp('internals/templates/i18n.js', 'app/i18n.js');
 shell.cp('internals/templates/index.html', 'app/index.html');
 shell.cp('internals/templates/reducers.js', 'app/reducers.js');
-shell.cp('internals/templates/configureStore.js', 'app/configureStore.js');
+shell.cp(
+  'internals/templates/configureStore.js',
+  'app/configureStore.js',
+);
 
 // Remove the templates folder
 shell.rm('-rf', 'internals/templates');
@@ -53,8 +62,9 @@ addCheckMark();
 
 // Commit the changes
 if (
-  shell.exec('git add . --all && git commit -qm "Remove default example"')
-    .code !== 0
+  shell.exec(
+    'git add . --all && git commit -qm "Remove default example"',
+  ).code !== 0
 ) {
   shell.echo('\nError: Git commit failed');
   shell.exit(1);

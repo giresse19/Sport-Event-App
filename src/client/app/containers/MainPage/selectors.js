@@ -5,7 +5,10 @@ const selectMainPageDomain = state =>
   state.get('mainPage', initialState);
 
 const makeSelectMainPage = () =>
-  createSelector(selectMainPageDomain, substate => substate.toJS());
+  createSelector(
+    selectMainPageDomain,
+    substate => substate.toJS(),
+  );
 
 export default makeSelectMainPage;
 export { selectMainPageDomain };

@@ -12,7 +12,6 @@ import {
   LOGINFINAL,
   ADD_RUNNER,
   CONTINUE_RUNNER,
- 
 } from './constants';
 
 export const initialState = fromJS({
@@ -26,8 +25,10 @@ export const initialState = fromJS({
 
 function mainPageReducer(state = initialState, action) {
   switch (action.type) {
-    case LOGIN:      
-      return state.set('error', null).set('login', fromJS(action.runnerStart));
+    case LOGIN:
+      return state
+        .set('error', null)
+        .set('login', fromJS(action.runnerStart));
     case ADD_RUNNER:
       return state.set('startRunner', fromJS(action.startRunner));
     case LOGINFINAL:

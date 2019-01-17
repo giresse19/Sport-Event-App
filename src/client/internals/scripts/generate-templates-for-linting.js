@@ -34,7 +34,9 @@ const reportErrorsFor = title => err => {
 
 // Generated tests are designed to fail, which would in turn fail CI builds
 const removeTestsDirFrom = relativePath => () =>
-  rimraf.sync(path.join(__dirname, '/../../app/', relativePath, '/tests'));
+  rimraf.sync(
+    path.join(__dirname, '/../../app/', relativePath, '/tests'),
+  );
 
 const plop = nodePlop('./index.js');
 
@@ -58,7 +60,9 @@ componentGen
     wantLoadable: true,
   })
   .then(checkForErrors)
-  .then(removeTestsDirFrom('components/RbGeneratedComponentEsclasspure'))
+  .then(
+    removeTestsDirFrom('components/RbGeneratedComponentEsclasspure'),
+  )
   .catch(reportErrorsFor('component/React.PureComponent'));
 
 componentGen
@@ -69,7 +73,11 @@ componentGen
     wantLoadable: true,
   })
   .then(checkForErrors)
-  .then(removeTestsDirFrom('components/RbGeneratedComponentStatelessfunction'))
+  .then(
+    removeTestsDirFrom(
+      'components/RbGeneratedComponentStatelessfunction',
+    ),
+  )
   .catch(reportErrorsFor('component/Stateless Function'));
 
 const containerGen = plop.getGenerator('container');
@@ -84,7 +92,11 @@ containerGen
     wantLoadable: true,
   })
   .then(checkForErrors)
-  .then(removeTestsDirFrom('containers/RbGeneratedContainerPureComponent'))
+  .then(
+    removeTestsDirFrom(
+      'containers/RbGeneratedContainerPureComponent',
+    ),
+  )
   .catch(reportErrorsFor('container/React.PureComponent'));
 
 containerGen
@@ -98,7 +110,9 @@ containerGen
     wantLoadable: true,
   })
   .then(checkForErrors)
-  .then(removeTestsDirFrom('containers/RbGeneratedContainerComponent'))
+  .then(
+    removeTestsDirFrom('containers/RbGeneratedContainerComponent'),
+  )
   .catch(reportErrorsFor('container/React.Component'));
 
 containerGen
@@ -112,8 +126,12 @@ containerGen
     wantLoadable: true,
   })
   .then(checkForErrors)
-  .then(removeTestsDirFrom('containers/RbGeneratedContainerStateless'))
+  .then(
+    removeTestsDirFrom('containers/RbGeneratedContainerStateless'),
+  )
   .catch(reportErrorsFor('container/Stateless'));
 
 const languageGen = plop.getGenerator('language');
-languageGen.runActions({ language: 'fr' }).catch(reportErrorsFor('language'));
+languageGen
+  .runActions({ language: 'fr' })
+  .catch(reportErrorsFor('language'));

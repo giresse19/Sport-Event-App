@@ -44,26 +44,22 @@ const task = message => {
 // Wrap async functions below into a promise
 const glob = pattern =>
   new Promise((resolve, reject) => {
-    nodeGlob(
-      pattern,
-      (error, value) => (error ? reject(error) : resolve(value)),
+    nodeGlob(pattern, (error, value) =>
+      error ? reject(error) : resolve(value),
     );
   });
 
 const readFile = fileName =>
   new Promise((resolve, reject) => {
-    fs.readFile(
-      fileName,
-      (error, value) => (error ? reject(error) : resolve(value)),
+    fs.readFile(fileName, (error, value) =>
+      error ? reject(error) : resolve(value),
     );
   });
 
 const writeFile = (fileName, data) =>
   new Promise((resolve, reject) => {
-    fs.writeFile(
-      fileName,
-      data,
-      (error, value) => (error ? reject(error) : resolve(value)),
+    fs.writeFile(fileName, data, (error, value) =>
+      error ? reject(error) : resolve(value),
     );
   });
 
@@ -114,11 +110,15 @@ const extractFromFile = fileName => {
   return readFile(fileName)
     .then(code => {
       // Use babel plugin to extract instances where react-intl is used
-      const { metadata: result } = transform(code, { presets, plugins });
+      const { metadata: result } = transform(code, {
+        presets,
+        plugins,
+      });
 
       for (const message of result['react-intl'].messages) {
         for (const locale of locales) {
-          const oldLocaleMapping = oldLocaleMappings[locale][message.id];
+          const oldLocaleMapping =
+            oldLocaleMappings[locale][message.id];
           // Merge old translations into the babel extracted instances where react-intl is used
           const newMsg =
             locale === DEFAULT_LOCALE ? message.defaultMessage : '';
@@ -129,7 +129,9 @@ const extractFromFile = fileName => {
       }
     })
     .catch(error => {
-      process.stderr.write(`Error transforming file: ${fileName}\n${error}`);
+      process.stderr.write(
+        `Error transforming file: ${fileName}\n${error}`,
+      );
     });
 };
 

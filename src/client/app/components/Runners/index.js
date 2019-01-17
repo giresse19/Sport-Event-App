@@ -14,7 +14,6 @@ import CenteringContainer from 'components/01-ui/CenteringContainer';
 import Button from 'components/01-ui/Button';
 
 import Wrapper from './styled/Wrapper';
-import BodyWrap from './styled/BodyWrap';
 import MainWrap from './styled/MainWrap';
 import TableHeader from './styled/TableHeader';
 
@@ -43,7 +42,7 @@ class Runners extends React.PureComponent {
         list: nextProps.startRunner,
         listFinal: nextProps.finishRunner,
       };
-    } else return null;
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -89,7 +88,7 @@ class Runners extends React.PureComponent {
               <Header />
 
               <Table
-                ref="Table"
+                myRef={el => (this.Table = el)}
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -135,7 +134,7 @@ class Runners extends React.PureComponent {
               <Header />
 
               <Table
-                ref="TableFinal"
+                myRef={el => (this.TableFinal = el)}
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -184,7 +183,8 @@ Runners.propTypes = {
     finishRunner: PropTypes.object,
   }),
 
-  headerRenderer: PropTypes.func,
+  startRunner: PropTypes.object,
+  finishRunner: PropTypes.object,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

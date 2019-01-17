@@ -19,20 +19,12 @@ import injectSaga from 'utils/injectSaga';
 import makeSelectMainPage from './selectors';
 import saga from './saga';
 
-import {
-  login,
-  loginFinal,
+import { login, loginFinal } from './actions';
 
-} from './actions';
-
+// eslint-disable-next-line react/prefer-stateless-function
 export class MainPage extends React.Component {
-
   render() {
-
-    const {
-      startRunner,
-      finishRunner,
-    } = this.props.mainPage;
+    const { startRunner, finishRunner } = this.props.mainPage;
 
     return (
       <Switch>
@@ -84,25 +76,23 @@ function mapDispatchToProps(dispatch) {
   let offset = 0;
 
   return {
-
     login: ([runnerStart]) => {
-      runnerStart.forEach((runner) => {
-        setTimeout(() => {         
-          dispatch(login(runner))
+      runnerStart.forEach(runner => {
+        setTimeout(() => {
+          dispatch(login(runner));
         }, 3000 + offset);
         offset += 3000;
-      })
+      });
     },
 
     loginFinal: ([runnersFinal]) => {
-      runnersFinal.forEach((runner) => {
-        setTimeout(() => {         
-          dispatch(loginFinal(runner))
+      runnersFinal.forEach(runner => {
+        setTimeout(() => {
+          dispatch(loginFinal(runner));
         }, 3000 + offset);
         offset += 3000;
-      })
+      });
     },
-
   };
 }
 
