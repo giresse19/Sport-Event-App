@@ -10,7 +10,7 @@ import {
   LOGIN, LOGINFINAL,
 } from './constants';
 
-// socket connection to server
+// socket connection to server with client type
 function connect() { 
   const socket = io('http://localhost:8000', {
     query: {

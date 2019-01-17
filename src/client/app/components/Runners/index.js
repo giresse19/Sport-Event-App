@@ -6,7 +6,7 @@
 
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Table, Column } from "react-virtualized";
+import { Table, Column } from 'react-virtualized';
 
 import Header from 'components/Header';
 import Loading from 'components/01-ui/Loading';
@@ -18,13 +18,11 @@ import BodyWrap from './styled/BodyWrap';
 import MainWrap from './styled/MainWrap';
 import TableHeader from './styled/TableHeader';
 
-
 const TOTAL_WIDTH = 1200;
 
 class Runners extends React.PureComponent {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       list: [this.props.startRunner],
@@ -34,65 +32,56 @@ class Runners extends React.PureComponent {
         FullName: 0.33,
         StartNumber: 0.33,
         StartTime: 0.33,
-        FinishTime:0.33,
-      }
-    }
+        FinishTime: 0.33,
+      },
+    };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-
     if (nextProps.startRunner !== prevState.list) {
-
       return {
         list: nextProps.startRunner,
         listFinal: nextProps.finishRunner,
       };
-    }
-
-    else return null;
+    } else return null;
   }
 
   componentDidUpdate(prevProps, prevState) {
-
-    if (prevState.list !== this.state.list) {
-
-      let list = [...this.state.list];
-      let listFinal = [...this.state.listFinal];
-
+    if (
+      prevState.list !== this.state.list ||
+      prevState.listFinal !== this.state.listFinal
+    ) {
       this.setState({
-        list,
-        listFinal,
+        list: [...prevProps.startRunner, this.state.list],
+        listFinal: [
+          ...prevProps.finishRunner,
+          this.state.finishRunner,
+        ],
       });
     }
   }
 
-  headerRenderer = ({
-    dataKey,
-    label,
-  }) => {
+  headerRenderer = ({ dataKey, label }) => {
     return (
       <Fragment key={dataKey}>
-        <TableHeader>
-          {label}
-        </TableHeader>
+        <TableHeader>{label}</TableHeader>
       </Fragment>
     );
   };
 
   render() {
-
     const { list, widths, listFinal } = this.state;
 
-    let rowCountStart = [];    
+    let rowCountStart = [];
     let rowCountFinal = [];
 
     rowCountStart.push(list.startRunner);
 
     rowCountFinal.push(listFinal.finishRunner);
 
-
-    if (!(Object.keys(list).length === 0 && list.constructor === Object)) {
-
+    if (
+      !(Object.keys(list).length === 0 && list.constructor === Object)
+    ) {
       return (
         <MainWrap>
           <CenteringContainer>
@@ -100,7 +89,7 @@ class Runners extends React.PureComponent {
               <Header />
 
               <Table
-                ref='Table'
+                ref="Table"
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -116,18 +105,11 @@ class Runners extends React.PureComponent {
                 />
                 <Column
                   headerRenderer={this.headerRenderer}
-                  dataKey="StartTime"
-                  label="clock Time"
-                  width={widths.StartTime * TOTAL_WIDTH}
-                />
-                <Column
-                  headerRenderer={this.headerRenderer}
                   dataKey="StartNumber"
                   label="starting Position"
                   width={widths.StartNumber * TOTAL_WIDTH}
                 />
               </Table>
-
             </Wrapper>
             <Button
               text="Back"
@@ -136,20 +118,24 @@ class Runners extends React.PureComponent {
               }}
             />
           </CenteringContainer>
-        </MainWrap >
+        </MainWrap>
       );
     }
 
-    if (!(Object.keys(listFinal).length === 0 && listFinal.constructor === Object)) {
-
+    if (
+      !(
+        Object.keys(listFinal).length === 0 &&
+        listFinal.constructor === Object
+      )
+    ) {
       return (
         <MainWrap>
           <CenteringContainer>
             <Wrapper>
-              <Header /> 
+              <Header />
 
               <Table
-                ref='TableFinal'
+                ref="TableFinal"
                 width={TOTAL_WIDTH}
                 height={100}
                 headerHeight={20}
@@ -175,8 +161,7 @@ class Runners extends React.PureComponent {
                   label="starting Position"
                   width={widths.StartNumber * TOTAL_WIDTH}
                 />
-
-              </Table>         
+              </Table>
             </Wrapper>
             <Button
               text="Back"
@@ -185,14 +170,11 @@ class Runners extends React.PureComponent {
               }}
             />
           </CenteringContainer>
-        </MainWrap >
+        </MainWrap>
       );
-
     }
 
-    return (
-      <Loading />
-    );
+    return <Loading />;
   }
 }
 
