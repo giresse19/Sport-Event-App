@@ -24,11 +24,11 @@ const checkChipId = (athletes, chipId) => {
   }
 };
 
-// 2 decimals
-// var precision = 100; 
-// var randomnum = Math.floor(Math.random() * (10 * precision - 1 * precision) + 1 * precision) / (1*precision);
+// clock-time with 2 decimals precision
 const getRandomArbitrary = (min, max) => {
-  return (Math.random() * (max - min) + min);
+  const precision = 100;
+  const randomnum = Math.floor(Math.random() * (max * precision - min * precision) + min * precision) / (min * precision);
+  return randomnum;
 }
 
 // converts array of object to object.. use for client-testing case
@@ -42,13 +42,10 @@ io.on('connection', (socket, callback) => {
   // Joining to room
   socket.join(clientType);
 
-  const runners = []
   // for testing client-side as required in task
   if (clientType === 'uiClientTest') {
 
-
     socket.on('start', ({ startRunner }) => {
-
       console.log('athletes from browser', startRunner);
 
       db.getAthletes((err, athletes) => {
@@ -58,56 +55,45 @@ io.on('connection', (socket, callback) => {
 
         athletes.forEach((athlete) => {
 
-          if (athlete.AthleteID !== startRunner.AthleteID) {
-            // console.log("athlete not found", startRunner)
-            return
-          }
+          if (athlete.AthleteID !== startRunner.AthleteID) {  return  }
 
           if (athlete.AthleteID == startRunner.AthleteID) {
 
             athlete.StartTime = getRandomArbitrary(1, 5);
+
             socket.emit('incorridor',
+              athlete
+            )
+            return
+          }
+        })
+      })
+    });
+
+    socket.on('finish', ({ finishRunner }) => {
+      console.log('finishline athletes from browser', finishRunner);
+
+      db.getAthletes((err, athletes) => {
+        if (err) return void callback(err);
+
+        athletes = mapArray(athletes);
+
+        athletes.forEach((athlete) => {
+
+          if (athlete.AthleteID !== finishRunner.AthleteID) { return }
+
+          if (athlete.AthleteID == finishRunner.AthleteID) {
+
+            // TODO: IMPLEMENT mergesort for StartTime and add to Finish Time Property.. and emit base on time;            
+            athlete.FinishTime = getRandomArbitrary(2, 6);
+
+            socket.emit('getfinish',
               athlete
             )
             return
           }
 
         })
-      })
-
-    });
-
-
-
-    socket.on('finish', ({ runner }) => {
-
-      console.log('finishline athletes from browser', runner);
-
-      db.getAthletes((err, athletes) => {
-        if (err) return void callback(err);
-
-        athletes = mapArray(athletes);
-        const runnersFinal = [];
-        console.log("console here", typeof athlete);
-        runner.forEach((runnerElement) => {
-          athletes.forEach((athlete) => {
-            if (athlete.AthleteID == runnerElement.AthleteID) {
-
-              console.log("console here", typeof athlete);
-
-              athlete.StopTime = athlete.StartTime + generateRandomTime(2, 3);
-
-              console.log("checking value here", athlete.StopTime);
-
-              runnersFinal.push(athlete);
-            }
-          })
-        })
-
-        console.log('finishing line...', runnersFinal);
-        socket.emit('getfinish',
-          runnersFinal
-        );
       })
     });
 
@@ -118,8 +104,7 @@ io.on('connection', (socket, callback) => {
   }
 
 
-  /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  */
-  // An example real time scenario code(real life runner)..just a suggestion code.
+  // Posssibly real time scenario suggestion code(real life runner).
   // P.S.. Pay attention to how emit is done	
   if (clientType === 'runner') {
 
@@ -128,7 +113,6 @@ io.on('connection', (socket, callback) => {
       module.exports = () => {
         if (!chipId) return void callback({ status: 400, message: 'AthletechipId cannot be empty' });
 
-        // get the athlete from database using chipId, create a response object including athlete info
         db.getAthletes((err, athletes) => {
           if (err) return void callback(err);
 
@@ -154,6 +138,7 @@ io.on('connection', (socket, callback) => {
   }
 
 });
+
 
 http_server.listen(PORT, console.log('Listening on', PORT));
 

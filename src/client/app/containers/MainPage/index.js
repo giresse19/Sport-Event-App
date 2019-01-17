@@ -82,18 +82,26 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   let offset = 0;
+
   return {
+
     login: ([runnerStart]) => {
       runnerStart.forEach((runner) => {
-        setTimeout(() => {
-          console.log("individual runner", runner)
+        setTimeout(() => {         
           dispatch(login(runner))
-        }, 5000 + offset);
-        offset += 5000;
+        }, 3000 + offset);
+        offset += 3000;
       })
     },
 
-    loginFinal: (runnersFinal) => dispatch(loginFinal(runnersFinal)),
+    loginFinal: ([runnersFinal]) => {
+      runnersFinal.forEach((runner) => {
+        setTimeout(() => {         
+          dispatch(loginFinal(runner))
+        }, 3000 + offset);
+        offset += 3000;
+      })
+    },
 
   };
 }
@@ -111,17 +119,3 @@ export default withRouter(
     withConnect,
   )(MainPage),
 );
-
-
-/*
-
-      return {
-    login: ([runnerStart]) => {
-      runnerStart.forEach((runner) => {
-        console.log("individual runner", runner)
-        dispatch(login(runner))
-      },
-      )
-    },
-
-    */

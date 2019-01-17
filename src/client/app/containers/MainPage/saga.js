@@ -1,6 +1,5 @@
 import io from 'socket.io-client';
 import { eventChannel } from 'redux-saga';
-
 import { takeEvery, fork, take, call, put } from 'redux-saga/effects';
 
 import {
@@ -11,8 +10,8 @@ import {
   LOGIN, LOGINFINAL,
 } from './constants';
 
-function connect() {
-  console.log("I am in websocket connect in saga file")
+// socket connection to server
+function connect() { 
   const socket = io('http://localhost:8000', {
     query: {
       clientType: 'uiClientTest'
@@ -25,21 +24,22 @@ function connect() {
   });
 }
 
+// subscribe for incoming events(socket connection...runners)
 function subscribe(socket) {
   return eventChannel(emit => {
 
     socket.on('incorridor', (athlete) => {
 
-      console.log('runner in corridor', athlete);
+      console.log('runner in corridor running: ', athlete);
 
       emit(addRunner({ startRunner: athlete }));
     });
 
-    socket.on('getfinish', (runnersFinal) => {
+    socket.on('getfinish', (athlete) => {
 
-      console.log('runner in finish', runnersFinal);
+      console.log('runner crossed finish: ', athlete);
 
-      emit(conRunner({ finishRunner: runnersFinal }));
+      emit(conRunner({ finishRunner: athlete }));
     });
 
     socket.on('disconnect', () => {
@@ -61,11 +61,12 @@ function* handleIO(socket) {
   yield fork(read, socket);
 }
 
+// entering corridor runner
 export function* flow(action) {
 
   let startRunner = action.runnerStart;
 
-  console.log("start runners", startRunner);
+  console.log("runner send signal for entering corridor line: ", startRunner);
 
   const socket = yield call(connect);
   
@@ -74,16 +75,16 @@ export function* flow(action) {
   yield fork(handleIO, socket);
 }
 
-// for finish line crossing
+// for finish line crossing runner
 export function* flowFinal(action) {  
 
-  let runner = action.runnersFinal
+  let finishRunner = action.runnersFinal
 
-  console.log("this is 2nd payload", runner);
+  console.log("runner send signal for crossing finish line: ", finishRunner);
 
   const socket = yield call(connect);
 
-  socket.emit('finish', { runner });
+  socket.emit('finish', { finishRunner });
 
   yield fork(handleIO, socket);
 }
