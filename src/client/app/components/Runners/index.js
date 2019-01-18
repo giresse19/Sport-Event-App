@@ -38,13 +38,21 @@ class Runners extends React.PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     // eslint-disable consistent-return
-    if (nextProps.startRunner !== prevState.list) {
+    if (
+      nextProps.startRunner !== prevState.list ||
+      nextProps.finishRunner !== prevState.listFinal
+    ) {
       return {
         list: nextProps.startRunner,
         listFinal: nextProps.finishRunner,
       };
     }
   }
+
+  /*  componentDidUpdate(prevProps, prevState){
+    if(prevProps.startRunner)
+
+  } */
 
   /* eslint-disable arrow-body-style */
   headerRenderer = ({ dataKey, label }) => {
