@@ -49,11 +49,6 @@ class Runners extends React.PureComponent {
     }
   }
 
-  /*  componentDidUpdate(prevProps, prevState){
-    if(prevProps.startRunner)
-
-  } */
-
   /* eslint-disable arrow-body-style */
   headerRenderer = ({ dataKey, label }) => {
     return (
