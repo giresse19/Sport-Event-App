@@ -46,6 +46,13 @@ class Runners extends React.PureComponent {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.startRunner !== this.state.list) {
+      console.log("previous state", prevProps.startRunner)
+      console.log("now state", this.state.list)
+    }
+  }
+
   /* eslint-disable arrow-body-style */
   headerRenderer = ({ dataKey, label }) => {
     return (

@@ -80,8 +80,8 @@ function mapDispatchToProps(dispatch) {
       runnerStart.forEach(runner => {
         setTimeout(() => {
           dispatch(login(runner));
-        }, 3000 + offset);
-        offset += 3000;
+        }, 1000 + offset);
+        offset += 1000;
       });
     },
 
@@ -89,8 +89,8 @@ function mapDispatchToProps(dispatch) {
       runnersFinal.forEach(runner => {
         setTimeout(() => {
           dispatch(loginFinal(runner));
-        }, 3000 + offset);
-        offset += 3000;
+        }, 1000 + offset);
+        offset += 1000;
       });
     },
   };
