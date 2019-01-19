@@ -80,7 +80,7 @@ class Runners extends React.PureComponent {
                 rowHeight={30}
                 rowCount={list.length}
                 rowGetter={({ index }) => {
-                  if (index > 1 && index % 2 == 0) {
+                  if (index > 1 && index % 2 === 0) {
                     return list[index].startRunner;
                   } else {
                     return list[index];
@@ -131,7 +131,7 @@ class Runners extends React.PureComponent {
                 rowHeight={30}
                 rowCount={listFinal.length}
                 rowGetter={({ index }) => {
-                  if (index > 1 && index % 2 == 0) {
+                  if (index > 1 && index % 2 === 0) {
                     return listFinal[index].finishRunner;
                   } else {
                     return listFinal[index];

@@ -74,7 +74,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   let offset = 0;
-  let interval= 1000
+  const interval = 1000;
 
   return {
     login: ([runnerStart]) => {

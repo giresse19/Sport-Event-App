@@ -23,6 +23,7 @@ module.exports = {
   },
   rules: {
     indent: 'off',
+    'no-else-return': 0,    
     'arrow-body-style': 0,
     ' no-unused-expressions': 0,
     'no-sequences': 0,
@@ -65,6 +66,7 @@ module.exports = {
     'prefer-template': 2,
     'react/jsx-closing-tag-location': 0,
     'react/forbid-prop-types': 0,
+    'react/no-unused-prop-types':0,
     'react/jsx-first-prop-new-line': [2, 'multiline'],
     'react/jsx-filename-extension': 0,
     'react/jsx-no-target-blank': 0,
