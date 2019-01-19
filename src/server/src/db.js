@@ -100,7 +100,7 @@ module.exports = {
       {
         AthleteID: 12,
         StartNumber: 30,
-        FullName: "Harold Abrahams",
+        FullName: "Harold Thomas",
         StartTime: "",
         FinishTime: ""
       },

@@ -49,8 +49,6 @@ io.on("connection", (socket, callback) => {
   // for testing client-side as required in task
   if (clientType === "uiClientTest") {
     socket.on("start", ({ startRunner }) => {
-      console.log("athletes from browser", startRunner);
-
       db.getAthletes((err, athletes) => {
         if (err) return void callback(err);
 
@@ -64,6 +62,7 @@ io.on("connection", (socket, callback) => {
           if (athlete.AthleteID == startRunner.AthleteID) {
             athlete.StartTime = getRandomArbitrary(1, 3);
 
+            console.log("athletes from browser", athlete);
             socket.emit("incorridor", athlete);
             return;
           }
@@ -87,7 +86,8 @@ io.on("connection", (socket, callback) => {
           if (athlete.AthleteID == finishRunner.AthleteID) {
             athlete.FinishTime = getRandomArbitrary(5, 10);
             // TODO: IMPLEMENT mergesort for on finishTime before emit
-
+            console.log("athletes from browser", athlete);
+            
             socket.emit("getfinish", athlete);
             return;
           }
