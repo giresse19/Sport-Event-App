@@ -49,6 +49,18 @@ class Runners extends React.PureComponent {
     }
   }
 
+  // .scrollToRow(0)
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.list !== this.state.list ||
+      prevState.listFinal !== this.state.listFinal
+    ) {
+      if (typeof this.refs.Table !== 'undefined') {
+        this.refs.Table.scrollToRow(this.state.list.length);
+      }
+    }
+  }
+
   /* eslint-disable arrow-body-style */
   headerRenderer = ({ dataKey, label }) => {
     return (
@@ -74,6 +86,7 @@ class Runners extends React.PureComponent {
             <Wrapper>
               <Header />
               <Table
+                ref="Table"
                 width={TOTAL_WIDTH}
                 height={400}
                 headerHeight={20}
@@ -125,6 +138,7 @@ class Runners extends React.PureComponent {
             <Wrapper>
               <Header />
               <Table
+                ref="Table"
                 width={TOTAL_WIDTH}
                 height={400}
                 headerHeight={20}
