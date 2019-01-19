@@ -49,7 +49,7 @@ class Runners extends React.PureComponent {
     }
   }
 
-  // .scrollToRow(0)
+  // auto-scroll and move first elements out of visibility
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.list !== this.state.list ||
