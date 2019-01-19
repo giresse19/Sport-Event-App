@@ -24,8 +24,8 @@ class Runners extends React.PureComponent {
     super(props);
 
     this.state = {
-      list: [this.props.startRunner],
-      listFinal: [this.props.finishRunner],
+      list: [],
+      listFinal: [],
       widths: {
         AthleteID: 0.33,
         FullName: 0.33,
@@ -38,18 +38,14 @@ class Runners extends React.PureComponent {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     // eslint-disable consistent-return
-    if (nextProps.startRunner !== prevState.list) {
+    if (
+      prevState.list !== nextProps.startRunner ||
+      prevState.listFinal !== nextProps.finishRunner
+    ) {
       return {
-        list: nextProps.startRunner,
-        listFinal: nextProps.finishRunner,
+        list: [...prevState.list, nextProps.startRunner],
+        listFinal: [...prevState.listFinal, nextProps.finishRunner],
       };
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.startRunner !== this.state.list) {
-      console.log("previous state", prevProps.startRunner)
-      console.log("now state", this.state.list)
     }
   }
 
@@ -65,29 +61,31 @@ class Runners extends React.PureComponent {
   render() {
     const { list, widths, listFinal } = this.state;
 
-    const rowCountStart = [];
-    const rowCountFinal = [];
-
-    rowCountStart.push(list.startRunner);
-
-    rowCountFinal.push(listFinal.finishRunner);
-
     if (
-      !(Object.keys(list).length === 0 && list.constructor === Object)
+      list.length > 2 &&
+      !(
+        Object.keys(list[2]).length === 0 &&
+        list[2].constructor === Object
+      )
     ) {
       return (
         <MainWrap>
           <CenteringContainer>
             <Wrapper>
               <Header />
-
               <Table
                 width={TOTAL_WIDTH}
-                height={100}
+                height={400}
                 headerHeight={20}
                 rowHeight={30}
-                rowCount={rowCountStart.length}
-                rowGetter={({ index }) => rowCountStart[index]}
+                rowCount={list.length}
+                rowGetter={({ index }) => {
+                  if (index > 1 && index % 2 == 0) {
+                    return list[index].startRunner;
+                  } else {
+                    return list[index];
+                  }
+                }}
               >
                 <Column
                   headerRenderer={this.headerRenderer}
@@ -115,9 +113,10 @@ class Runners extends React.PureComponent {
     }
 
     if (
+      listFinal.length > 2 &&
       !(
-        Object.keys(listFinal).length === 0 &&
-        listFinal.constructor === Object
+        Object.keys(listFinal[2]).length === 0 &&
+        listFinal[2].constructor === Object
       )
     ) {
       return (
@@ -125,14 +124,19 @@ class Runners extends React.PureComponent {
           <CenteringContainer>
             <Wrapper>
               <Header />
-
               <Table
                 width={TOTAL_WIDTH}
-                height={100}
+                height={400}
                 headerHeight={20}
                 rowHeight={30}
-                rowCount={rowCountFinal.length}
-                rowGetter={({ index }) => rowCountFinal[index]}
+                rowCount={listFinal.length}
+                rowGetter={({ index }) => {
+                  if (index > 1 && index % 2 == 0) {
+                    return listFinal[index].finishRunner;
+                  } else {
+                    return listFinal[index];
+                  }
+                }}
               >
                 <Column
                   headerRenderer={this.headerRenderer}

@@ -74,14 +74,15 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   let offset = 0;
+  let interval= 1000
 
   return {
     login: ([runnerStart]) => {
       runnerStart.forEach(runner => {
         setTimeout(() => {
           dispatch(login(runner));
-        }, 1000 + offset);
-        offset += 1000;
+        }, interval + offset);
+        offset += interval;
       });
     },
 
@@ -89,8 +90,8 @@ function mapDispatchToProps(dispatch) {
       runnersFinal.forEach(runner => {
         setTimeout(() => {
           dispatch(loginFinal(runner));
-        }, 1000 + offset);
-        offset += 1000;
+        }, interval + offset);
+        offset += interval;
       });
     },
   };
